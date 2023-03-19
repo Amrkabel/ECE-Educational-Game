@@ -6,22 +6,18 @@ class Node
 {
 private:
 	T value;
-	string name;
+	std::string name;
 
 public:
-	Node Node(T initial)
+	Node(T initial)
 	{
 		value = initial;
-
-		return this;
 	}
 
-	Node Node(T initial, string nodeName)
+	Node(T initial, std::string nodeName)
 	{
 		value = initial;
 		name = nodeName;
-
-		return this;
 	}
 
 	T getValue()
@@ -29,8 +25,18 @@ public:
 		return value;
 	}
 
-	string getName()
+	std::string getName()
 	{
 		return name;
+	}
+
+	void changeValue(T newValue)
+	{
+		value = newValue;
+	}
+
+	void changeName(std::string newName)
+	{
+		name = newName;
 	}
 };
