@@ -6,141 +6,142 @@ class Gate
 {
 private:
 	std::string type;
-	Node<bool>* input1;
-	Node<bool>* input2;
-	Node<bool>* output;
+	Node<bool> input1;
+	Node<bool> input2;
+	Node<bool> output;
 
 public:
-	Gate(std::string typ, Node<bool>* inp1, Node<bool>* inp2, Node<bool>* out)
+	Gate(std::string typ, Node<bool> inp1, Node<bool> inp2, Node<bool> out)
 	{
 		type = typ;
 		input1 = inp1;
 		input2 = inp2;
-		output = changeOutput();
+		output = output;
+		changeOutput();
 	}
 
 	void changeType(std::string typ)
 	{
 		type = typ;
-		output = changeOutput();
+		changeOutput();
 	}
 
-	Node<bool>* changeOutput()
+	void changeOutput()
 	{
 		if (type == "and")
 		{
-			return andGate();
+			andGate();
 		}
 
 		else if (type == "or")
 		{
-			return orGate();
+			orGate();
 		}
 
 		else if (type == "xor")
 		{
-			return xorGate();
+			xorGate();
 		}
 
 		else if (type == "nand")
 		{
-			return nandGate();
+			nandGate();
 		}
 
 		else if (type == "nor")
 		{
-			return norGate();
+			norGate();
 		}
 
 		else if (type == "xnor")
 		{
-			return xnorGate();
+			xnorGate();
 		}
 
 		else if (type == "not")
 		{
-			return notGate();
+			notGate();
 		}
 	}
 
-	Node<bool>* andGate()
+	void andGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = x and y;
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* orGate()
+	void orGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = x or y;
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* xorGate()
+	void xorGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = x ^ y;
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* nandGate()
+	void nandGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = !(x and y);
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* norGate()
+	void norGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = !(x or y);
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* xnorGate()
+	void xnorGate()
 	{
-		bool x = input1->getValue();
-		bool y = input2->getValue();
+		bool x = input1.getValue();
+		bool y = input2.getValue();
 		bool value = !(x ^ y);
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	Node<bool>* notGate()
+	void notGate()
 	{
-		bool x = input1->getValue();
+		bool x = input1.getValue();
 		bool value = !(x);
-		output->changeValue(value);
+		output.changeValue(value);
 	}
 
-	void changeInputOne(Node<bool>* inp1)
+	void changeInputOne(Node<bool> inp1)
 	{
 		input1 = inp1;
-		output = changeOutput();
+		changeOutput();
 	}
 
-	void changeInputTwo(Node<bool>* inp2)
+	void changeInputTwo(Node<bool> inp2)
 	{
 		input2 = inp2;
-		output = changeOutput();
+		changeOutput();
 	}
 
-	Node<bool>* getInputOne()
+	Node<bool> getInputOne()
 	{
 		return input1;
 	}
 
-	Node<bool>* getInputTwo()
+	Node<bool> getInputTwo()
 	{
 		return input2;
 	}
 
-	Node<bool>* getOutput()
+	Node<bool> getOutput()
 	{
 		return output;
 	}
@@ -148,5 +149,17 @@ public:
 	std::string getType()
 	{
 		return type;
+	}
+
+	void changeInputOneValue(bool x)
+	{
+		input1.changeValue(x);
+		changeOutput();
+	}
+
+	void changeInputTwoValue(bool x)
+	{
+		input1.changeValue(x);
+		changeOutput();
 	}
 };

@@ -9,12 +9,7 @@ private:
 	std::string name;
 
 public:
-	Node(T initial)
-	{
-		value = initial;
-	}
-
-	Node(T initial, std::string nodeName)
+	Node(T initial = 0, std::string nodeName = "")
 	{
 		value = initial;
 		name = nodeName;
