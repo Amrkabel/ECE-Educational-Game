@@ -85,14 +85,3 @@ bool result_Logic(std::string gate1, std::string gate2)
 	return y;
 }
 
-int main() {
-	bool s;
-	std::string p = "and";
-	std::string q = "or";
-	s = result_Logic(p, q);
-
-	std::cout << "something" << std::endl;
-
-	std::cout << "the result is: " << s << std::endl;
-	return 0;
-}
