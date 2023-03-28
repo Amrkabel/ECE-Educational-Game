@@ -13,11 +13,12 @@ private:
 	std::vector<std::vector<bool>> truthTable;
 
 public:
-	Logic(std::vector<Node<bool>*> inp, std::vector<Node<bool>*> out, std::vector<std::vector<bool>> table)
+	Logic(std::vector<Node<bool>*> inp, std::vector<Node<bool>*> out, std::vector<Gate*> gate, std::vector<std::vector<bool>> table)
 	{
 		inputs = inp;
 		outputs = out;
 		truthTable = table;
+		gates = gate;
 	}
 
 	void addInput(Node<bool>* x)
@@ -67,7 +68,6 @@ public:
 
 		for (int i = 1; i < truthTable.size(); i++)
 		{
-			int counter = 0;
 			for (int j = 0; j < truthTable[i].size(); j++)
 			{
 				if (truthTable[0][j] == false)
@@ -80,10 +80,16 @@ public:
 					}
 				}
 
-				else if (outputs[j - counter]->getValue() != truthTable[i][j])
+				else 
 				{
-					check = false;
-					return check;
+					for (int counter = 0; counter < outputs.size(); counter++)
+					{
+						if (outputs[counter]->getValue() != truthTable[i][j])
+						{
+							check = false;
+							return check;
+						}
+					}
 				}
 			}
 		}
