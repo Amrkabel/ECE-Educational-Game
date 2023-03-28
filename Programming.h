@@ -39,4 +39,10 @@ public:
 	{
 		return errors;
 	}
+	
+	bool result(std::vector<int> user_input){
+		std::sort(user_input.begin(), user_input.end());
+		std::sort(errors.begin(), errors.end());
+		return user_input == errors;
+	}
 };
