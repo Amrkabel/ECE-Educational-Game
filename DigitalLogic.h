@@ -2,6 +2,7 @@
 #include "Nodes.h"
 #include "Gates.h"
 #include <vector>
+#include "Multiplexer.h"
 
 
 class Logic
@@ -11,6 +12,7 @@ private:
 	std::vector<Node<bool>*> outputs;
 	std::vector<Gate*> gates;
 	std::vector<std::vector<bool>> truthTable;
+	std::vector<Mux4*> muxes;
 
 public:
 	Logic(std::vector<Node<bool>*> inp, std::vector<Node<bool>*> out, std::vector<Gate*> gate, std::vector<std::vector<bool>> table)
@@ -74,9 +76,28 @@ public:
 				{
 					inputs[j]->changeValue(truthTable[i][j]);
 
-					for (int k = 0; k < gates.size(); k++)
+					if (gates.size() != 0)
 					{
-						gates[k]->changeOutput();
+						for (int k = 0; k < gates.size(); k++)
+						{
+							gates[k]->changeOutput();
+						}
+					}
+
+					if (muxes.size() != 0)
+					{
+						for (int k = 0; k < muxes.size(); k++)
+						{
+							muxes[k]->changeOutput();
+						}
+
+						if (gates.size() != 0)
+						{
+							for (int k = 0; k < gates.size(); k++)
+							{
+								gates[k]->changeOutput();
+							}
+						}
 					}
 				}
 
