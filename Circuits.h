@@ -28,7 +28,6 @@ public:
 	{
 		reference->changeValue(0);
 		std::vector<Node<double>*> changed;
-		changed.push_back(reference);
 
 		for (int i = 0; i < sources.size(); i++)
 		{
@@ -42,7 +41,7 @@ public:
 		{
 			for (int j = 0; j < resistors.size(); j++)
 			{
-				for (int k = 0; k < changed.size(); j++)
+				for (int k = 0; k < changed.size(); k++)
 				{
 					if ((resistors[j]->getNode1() == changed[k]) or (resistors[j]->getNode2() == changed[k]))
 					{
