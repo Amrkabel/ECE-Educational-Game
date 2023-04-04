@@ -3,7 +3,7 @@
 #include "Resistors.h"
 #include "Sources.h"
 #include <vector>
-#include <algorithm>
+#include <iostream>
 
 class Circuit
 {
@@ -12,6 +12,7 @@ private:
 	std::vector<Node<double>*> nodes;
 	std::vector<Resistor*> resistors;
 	std::vector<Source*> sources;
+	Resistor* net;
 
 public:
 	Circuit(Node<double>* ref, std::vector<Node<double>*> node, std::vector<Resistor*> res, std::vector<Source*> source)
@@ -31,34 +32,72 @@ public:
 
 		for (int i = 0; i < sources.size(); i++)
 		{
-			double temp = sources[i]->getValue() - sources[i]->getNode2()->getValue();
-			sources[i]->getNode1()->changeValue(temp);
-			changed.push_back(sources[i]->getNode1());
-			changed.push_back(sources[i]->getNode2());
-		}
-
-		for (int i = 0; i < resistors.size(); i++)
-		{
-			for (int j = 0; j < resistors.size(); j++)
+			if (sources[i]->getNode1() != reference)
 			{
-				for (int k = 0; k < changed.size(); k++)
-				{
-					if ((resistors[j]->getNode1() == changed[k]) or (resistors[j]->getNode2() == changed[k]))
-					{
-						break;
-					}
-					else if (resistors[i]->getNode1() == resistors[j]->getNode1())
-					{
-						resistors[i]->getNode1()->changeValue(resistors[j]->getNode1()->getValue() * (resistors[i]->getResistance() / (resistors[i]->getResistance() + resistors[j]->getResistance())));
-						changed.push_back(resistors[i]->getNode2());
-					}
-					else if (resistors[i]->getNode2() == resistors[j]->getNode1())
-					{
-						resistors[i]->getNode2()->changeValue(resistors[j]->getNode1()->getValue() * (resistors[i]->getResistance()/(resistors[i]->getResistance() + resistors[j]->getResistance())));
-						changed.push_back(resistors[i]->getNode2());
-					}
-				}
+				double temp = sources[i]->getValue() - sources[i]->getNode2()->getValue();
+				sources[i]->getNode1()->changeValue(temp);
+				changed.push_back(sources[i]->getNode1());
+				changed.push_back(sources[i]->getNode2());
+			}
+
+			else
+			{
+				double temp = sources[i]->getValue() - sources[i]->getNode1()->getValue();
+				sources[i]->getNode2()->changeValue(temp);
+				changed.push_back(sources[i]->getNode1());
+				changed.push_back(sources[i]->getNode2());
 			}
 		}
+
+		double val = changeResistor(1);
+
+		Resistor n(val, sources[0]->getNode1(), reference);
+
+		net = &n;
+	}
+
+	double changeResistor(int i)
+	{
+		double val = 0;
+
+		if (resistors[i]->getNode1() == resistors[i - 1]->getNode1())
+		{
+			if (resistors[i]->getNode2() == resistors[i - 1]->getNode2())
+			{
+				val += 1 / ((1 / resistors[i]->getResistance()) + (1 / resistors[i - 1]->getResistance()));
+			}
+
+			else
+			{
+				double newval = changeResistor(i + 1);
+				val += 1 / ((1 / resistors[i]->getResistance()) + (1 / newval));
+			}
+		}
+
+		else if (resistors[i - 1]->getNode2() == resistors[i]->getNode1())
+		{
+			if (i == (resistors.size() - 1))
+			{
+				val += resistors[i]->getResistance() + resistors[i - 1]->getResistance();
+			}
+
+			else if (resistors[i]->getNode2() == resistors[i + 1]->getNode1())
+			{
+				val += resistors[i]->getResistance() + resistors[i - 1]->getResistance();
+			}
+
+			else
+			{
+				val += changeResistor(i + 1) + resistors[i - 1]->getResistance();
+			}
+		}
+
+		std::cout << val << std::endl;
+		return val;
+	}
+
+	double getCurrent()
+	{
+		return net->getCurrent();
 	}
 };
