@@ -37,6 +37,11 @@ public:
 	{
 		gates.push_back(x);
 	}
+	
+	void addMux(Mux4* x)
+    	{
+        	muxes.push_back(x);
+    	}
 
 	void changeTruthTable(std::vector<std::vector<bool>> table)
 	{
